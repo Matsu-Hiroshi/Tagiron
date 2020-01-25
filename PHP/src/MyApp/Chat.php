@@ -197,10 +197,12 @@ class Chat implements MessageComponentInterface {
                             }else{
                                 $sendData += array("turn" => "false");
                             }
+
+                            $msg = json_encode($sendData);
+                            $this->send($member[$i], $msg);
                         }
 
-                        $msg = json_encode($sendData);
-                        $this->send($member[$i], $msg);
+                        
                     }
 
                 }else{
