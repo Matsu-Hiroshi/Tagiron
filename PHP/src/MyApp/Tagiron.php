@@ -70,6 +70,7 @@ namespace MyApp;
 			for($i = 0;$i < 6;$i++) {
 				$this->question[] = array_shift($this->questions);
 			}
+			var_dump($this->question);
 
 			for($i = 0;$i < $playerNum;$i++){
 				$this->players += [ $i => array() ];
@@ -110,10 +111,7 @@ namespace MyApp;
 		}
 
 		function reloadQuestion($id) {
-			$rand = rand(0, count($this->questions) - 1);
-
-			$repraceArray = array(array_search($id, $this->question) => $this->questions[$rand]);
-
+			$repraceArray = array(array_search($id, $this->question) => array_shift($this->questions));
 			$this->question = array_replace($this->question, $repraceArray);
 
 			return $this->question;
