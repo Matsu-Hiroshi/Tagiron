@@ -1,0 +1,23 @@
+
+body{
+
+    background-color: rgb(243, 239, 3);
+
+    $h1-border: solid black 8px;
+    h1{
+        font-family: 'arial black';
+        margin-top: 30px;
+
+        border-top: $h1-border;
+        border-bottom: $h1-border;
+
+        text-align: center;
+        width: 100%;
+        font-size: 42px;
+    }
+
+    h2{
+        font-family: 'arial black';
+    }
+
+}

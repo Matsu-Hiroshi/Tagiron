@@ -1,0 +1,299 @@
+/* 全体 */
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    margin: 0;
+    background-color: white;
+}
+.pure-g{
+    height: 100%;
+}
+/* 右側のDIV */
+#playerBox{
+    height: 100%;
+}
+/* 手札 */
+.player{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    background-color: rgb(235, 196, 26);
+    height: 25%;
+}
+.numBox{
+    height: 100%;
+    width: auto;
+    margin-left: 1.25%;
+    margin-top: 7%;
+}
+.num{
+    float: left;
+    height: 70%;
+    width: 19%;
+    margin-left: 0.5%;
+}
+/* タイマー */
+.timer{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    background-color: rgb(235, 196, 26);
+    height: 10%;
+    text-align: center;
+}
+#turn{
+    font-size: 110%;
+}
+#time{
+    font-size: 175%;
+}
+/* メモ */
+.memo{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    height: 65%;
+}
+.ta{
+    height: 99%;
+    width: 99%;
+}
+/* 真ん中のDIV */
+#fieldBox{
+    height: 100%;
+    background-color: green;
+}
+/* 質問 */
+#question{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    height: 55%;
+}
+.q_list li{
+    display: inline-block;
+    margin-left: 4%;
+    margin-top: 1%;
+    margin-bottom: -1%;
+    height: auto;
+    width: 94%;
+}
+.q_box{
+    float: left;
+    position: relative;
+    height: 50%;
+    width: 33%;
+}
+.qimg{
+    height: auto;
+    width: 97%;
+}
+.qimg.checked {
+    border: 6px solid blue;
+    box-sizing: border-box;
+}
+.qimg.checked + .disabled_checkbox{
+    display: block;
+}
+/* ボタン */
+.button_wrapper{
+    margin-top: 1px;
+    text-align:center;
+}
+.qb{
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color: skyblue;
+    border: solid 2px  skyblue;
+    border-radius: 3px;
+    transition: .4s;
+}
+.qb:hover{
+    background:  skyblue;
+    color: white;
+}
+.ab{
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color:  skyblue;
+    border: solid 2px  skyblue;
+    border-radius: 3px;
+    transition: .4s;
+}
+.ab:hover{
+    background:  skyblue;
+    color: white;
+}
+/* 回答 */
+#answer{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    height: 45%;
+}
+.a_list li{
+    display: inline-block;
+    margin-left: 2%;
+    margin-top: 1%;
+    margin-bottom: -1%;
+    height: 100%;
+    width: 96%;
+}
+.a_box{
+    float: left;
+    position: relative;
+    height: 50%;
+    width: 10%;
+}
+.aNum{
+    height: auto;
+    width: 99%;
+}
+.aNum.checked {
+    border: 6px solid blue;
+    box-sizing: border-box;
+}
+.aNum.checked + .disabled_checkbox{
+    display: block;
+}
+
+.disabled_checkbox{
+    display: none;
+    position: absolute;
+    top: 7%;
+    right: 8%;
+    cursor: pointer;
+}
+/* ログ（右側のDIV） */
+#logBox{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    background-color: rgb(106, 211, 211);
+    height: 100%;
+    overflow: auto;
+}
+.qLog{
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: black;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    margin-bottom: 1%;
+}
+.qLogImg{
+    height: auto;
+    width: 90%;
+    margin-left: 5%;
+}
+.aMsg{
+    text-align: center;
+    
+}
+/* モーダルウィンドウ */
+.modal{
+    display: none;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+.modal__bg{
+    background: rgba(0,0,0,0.8);
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+}
+.modal__content{
+    background: rgb(238, 238, 238);
+    left: 50%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 60%;
+}
+/* 質問選択時 */
+.modalQAbox{
+    height: 70%;
+}
+.modalQaimg{
+    display: block;
+    height: auto;
+    width: 60%;
+    margin: auto;
+}
+.modalBBox{
+    display: inline-block;
+    height: auto;
+    width: 60%;
+    margin-top: 1%;
+    margin-left: 20%;
+}
+.modalQsb{
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    color: lightskyblue;
+    border: double 4px lightskyblue;
+    border-radius: 3px;
+    transition: .4s;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.modalQsb:hover{
+    background:  lightskyblue;
+    color: white;
+}
+.modalCancelb{
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color:  lightskyblue;
+    border: solid 2px  lightskyblue;
+    border-radius: 3px;
+    transition: .4s;
+    margin-left: 51%;
+}
+.modalCancelb:hover{
+    background:  lightskyblue;
+    color: white;
+}
+/* 質問ログ表示時 */
+.modalQImg{
+    display: block;
+    height: auto;
+    width: 60%;
+    margin: auto;
+}
+.modalAMsg{
+    text-align: center;
+    margin-top: 1%;
+}
+.qLog{
+    height: auto;
+    width: 100%;
+}
+.qLogImg{
+    display: block;
+    height: auto;
+    width: 90%;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.logAMsg{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}

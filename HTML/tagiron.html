@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+        <title>tagiron</title>
+        <!-- <link rel="stylesheet" href="pure-release-1.0.1/pure-min.css"> -->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="css/tagiron.css"> -->
+        <link rel="stylesheet" href="css/tagiron.css" id="baseCss">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src = "javascript/socket.js"></script> -->
+        <script type="text/javascript" src="javascript/tagiron.js"></script>
+        <!-- <script type="text/javascript" src="javascript/checkbox.js"></script> -->
+	</head>
+	<body>
+		<div class="pure-g">
+            <!-- 左側のDiv -->
+            <div class="pure-u-6-24" id="playerBox">
+                <!-- 手札 -->
+                <div class="player" id="player">
+                    <div class="numBox" id = "tiles">
+                        <img src="./Timg/r0.jpg" alt="tile1" class="num" id="tile1">
+                        <img src="./Timg/r1.jpg" alt="tile2" class="num" id="tile2">
+                        <img src="./Timg/r2.jpg" alt="tile3" class="num" id="tile3">
+                        <img src="./Timg/r3.jpg" alt="tile4" class="num" id="tile4">
+                        <img src="./Timg/r4.jpg" alt="tile5" class="num" id="tile5">
+                    </div>
+                </div>
+                <div class="timer">
+                    <p id="turn">あなたのターン</p>
+                    <p id="time">60秒</p>
+                </div>
+                <!-- メモ -->
+                <div class="memo">
+                    <textarea class="ta" onkeypress="enter();"></textarea>
+                </div>
+            </div>
+             <!-- 真ん中のdiv -->
+            <div class="pure-u-13-24" id="fieldBox">
+                <!-- 質問 -->
+                <div id="question">
+                    <ul class="q_list">
+                        <li>
+                            <div class="q_box">
+                                <img class="qimg" id = "qimg1" src="./Timg/q1.jpg" alt="q1" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                             <div class="q_box">
+                                <img class="qimg" id = "qimg2" src="./Timg/q2.jpg" alt="q2" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                             <div class="q_box">
+                                <img class="qimg" id = "qimg3" src="./Timg/q3.jpg" alt="q3" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="q_box">
+                                <img class="qimg" id = "qimg4" src="./Timg/q4.jpg" alt="q4" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                             <div class="q_box">
+                                <img class="qimg" id = "qimg5" src="./Timg/q5.jpg" alt="q5" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                             <div class="q_box">
+                                <img class="qimg" id = "qimg6" src="./Timg/q6.jpg" alt="q6" />
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="button_wrapper">
+                        <button type="button" class="qb" id="qb">質問する</button>
+                    </div>
+                </div>
+                <!-- 回答 -->
+                <div id="answer">
+                    <ul class="a_list">
+                        <li>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r0.jpg" alt="r0"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r1.jpg" alt="r1"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r2.jpg" alt="r2"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r3.jpg" alt="r3"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r4.jpg" alt="r4"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/y5.jpg" alt="y5"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r6.jpg" alt="r6"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r7.jpg" alt="r7"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r8.jpg" alt="r8"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/r9.jpg" alt="r9"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b0.jpg" alt="b0"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b1.jpg" alt="b1"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b2.jpg" alt="b2"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b3.jpg" alt="b3"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b4.jpg" alt="b4"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/y5.jpg" alt="y5"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b6.jpg" alt="b6"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b7.jpg" alt="b7"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b8.jpg" alt="b8"/>
+                                <input class="disabled_checkbox" type="checkbox" checked/>
+                            </div>
+                            <div class="a_box">
+                                <img class="aNum" src="./Timg/b9.jpg" alt="b9"/>
+                                <input class="disabled_checkbox" type="checkbox" checked>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="button_wrapper">
+                        <button type="button" class="ab" id="ab">答える</button>
+                    </div>
+                </div>
+            </div>
+            <!-- ログ -->
+            <div class="pure-u-5-24" id="logBox">
+               
+            </div>
+        </div>
+        <!-- 質問に答えるモーダルウィンドウ -->
+        <div class="modal js-modal">
+            <div class="modal__bg"></div>
+            <div class="modal__content" id="modalQs">
+
+            </div>
+        </div>
+	</body>
+</html>
