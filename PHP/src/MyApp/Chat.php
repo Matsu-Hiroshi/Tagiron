@@ -27,13 +27,8 @@ class Chat implements MessageComponentInterface {
 
         echo "New connection! ({$conn->resourceId})\n";
         $roomId = $this->room->add($conn);
-
-        // var_dump($this->room->getOpponent($roomId));
-
         $opponent = $this->room->getOpponent($roomId);
-        // var_dump()
 
-        // echo count($opponent)
         if(count($opponent) >= 2){
             echo "startgame\n";
             $this->tagironData->add($roomId, $opponent);
@@ -45,19 +40,15 @@ class Chat implements MessageComponentInterface {
             "roomId" => (string)$roomId
         ];
 
-
-
-        $msg =  json_encode($date);
+        $msg = json_encode($date);
         $conn->send($msg);
     }
 
     //ゲームスタート
     private function gameStart($field, $roomId) {
         $playerNum = count($field["players"]);
-        // echo count($field["players"])."\n";
 
         $nextPlayer = $this->tagironData->getNextPlayer($roomId);
-        // echo $nextPlayer->resourceId;
         for ($i=0; $i < $playerNum; $i++) {
 
             $data = [
@@ -73,10 +64,7 @@ class Chat implements MessageComponentInterface {
                 $data += array("turn" => "false");
             }
 
-            
-
             $msg = json_encode($data);
-
             $this->send($field["players"][$i]["cliant"], $msg);
         }
     }
@@ -263,14 +251,17 @@ class Chat implements MessageComponentInterface {
                 ];
                 $sendjson = json_encode($sendData);
                 // $this->send($opp, $sendjson);
+
                 for($i = 0; $i < count($member); $i++) {
                     $this->send($member[$i], $sendjson);
                 }
             }
             $this->tagironData->remove($key);
-            $this->room->remove($key);
+            
             echo "endgame\n";
         }
+        echo "remove_".$key."\n";
+        $this->room->remove($key);
         
     }
 

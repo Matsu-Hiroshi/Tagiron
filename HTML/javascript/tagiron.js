@@ -191,14 +191,19 @@ socket.onmessage = function (event) {
     case "chat":
       
       var text = $("#chat").text();
-      text = "相手:" + data.msg + "\n" + text;
+      text = data.msg + "\n" + text;
       document.getElementById("chat").innerHTML = text;
       break;
 
     case "close":
-      // document.getElementById("print").innerHTML = data.msg;
       key = "";
       socket.close();
+      $('#modalQs').prepend('<div class="modalTurnS">対戦相手が退出しました。\nタイトル画面に戻ります</div>');
+      $('.js-modal').fadeIn();
+      setTimeout(function () {
+        location.href = 'title.html';
+      }, 2000);
+      
       break;
     case "question":
       timerStop = true;
