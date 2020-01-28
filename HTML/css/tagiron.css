@@ -15,7 +15,7 @@ body {
 .pure-g{
     height: 100%;
 }
-/* 右側のDIV */
+/* 左側のDIV */
 #playerBox{
     height: 100%;
 }
@@ -54,15 +54,24 @@ body {
 #time{
     font-size: 175%;
 }
-/* メモ */
-.memo{
+/* チャット */
+.chatArea{
     box-sizing: border-box;
     border-style: solid;
     border-color: black;
     height: 65%;
+    width: 100%;
 }
-.ta{
-    height: 99%;
+.inputText{
+    display: inline-block;
+    height: 5%;
+    width: 99%;
+}
+.inputText::placeholder{
+    color: lightslategray;
+}
+.chat{
+    height: 93%;
     width: 99%;
 }
 /* 真ん中のDIV */
@@ -279,6 +288,7 @@ body {
 .modalAMsg{
     text-align: center;
     margin-top: 1%;
+    font-size: 250%;
 }
 .qLog{
     height: auto;
@@ -296,4 +306,5 @@ body {
     height: 100%;
     width: 100%;
     text-align: center;
+    font-size: 150%;
 }

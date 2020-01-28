@@ -84,7 +84,7 @@ class Chat implements MessageComponentInterface {
     //クライアントからのメッセージの受信
     public function onMessage(ConnectionInterface $from, $msg) {
 
-        echo "\nfrom:".$from->resourceId."\ndata:".$msg."\n";
+        // echo "\nfrom:".$from->resourceId."\ndata:".$msg."\n";
 
         $data = json_decode($msg, true);
         // echo $data["type"];
@@ -136,9 +136,25 @@ class Chat implements MessageComponentInterface {
 
 
             break;
+
+            case 'message':
+                for($i=0; $i < $memberNum; $i++) { 
+                    # code...
+                    if($member[$i] != $from){
+                        $sendData = [
+                            "type" => "chat",
+                            "msg" =>  "相手:".$data['msg']
+                        ];
+
+                        $msg = json_encode($sendData);
+                        $this->send($member[$i], $msg);
+                    }
+                }
+            break;
+
             default:
                 # code...
-                break;
+            break;
         }
         
     }

@@ -1,5 +1,5 @@
 
-var socket = new WebSocket('ws://192.168.0.4:8080');
+var socket = new WebSocket('ws://localhost:8080');
 
 var key;
 var tiles = ["r0", "r1", "r2", "r3", "r4"];
@@ -125,6 +125,7 @@ $(function () {
             "id": qValue,
             "qsValue": qsValue
           };
+          timerstop = true;
           send(data);
           // timer(false);
           // 送信した質問の選択解除
@@ -150,6 +151,7 @@ $(function () {
           "roomId": key,
           "aArray": aArray
         };
+        timerstop = true;
         send(data);
         // 送信した回答の選択解除
         $("img.aNum.checked").removeClass('checked');
@@ -183,10 +185,16 @@ socket.onmessage = function (event) {
       questionSet(qIDs);
       break;
     case "message":
-
-      var text = document.getElementById("text").value;
-      document.getElementById("text").innerHTML = data.msg;
+      // var text = document.getElementById("text").value;
       break;
+
+    case "chat":
+      
+      var text = $("#chat").text();
+      text = "相手:" + data.msg + "\n" + text;
+      document.getElementById("chat").innerHTML = text;
+      break;
+
     case "close":
       // document.getElementById("print").innerHTML = data.msg;
       key = "";
@@ -223,8 +231,7 @@ socket.onmessage = function (event) {
 
 function gameStart(fieldData) {
 
-  $('.js-modal').fadeOut();
-  $('.modalQa').remove();
+  $('.modalTurnS').remove();
 
   var tiles = fieldData.tile;
 
@@ -274,13 +281,29 @@ function setQuestions(questions) {
 
 //buttonAction
 
-function enter() {
+$(document).ready(function(){
 
-  if (window.event.keyCode == 13) {
-    send();
-  }
+  $("input.inputText").keypress(function(e) {
 
-}
+    if(e.which == 13){
+      var msg = $(this).val();
+      var text = $("#chat").text();
+      text = "自分：" + msg + "\n" + text;
+      document.getElementById("chat").innerHTML = text;
+      var data = {
+        "type" : "message",
+        "roomId" : key,
+        "msg" : msg
+      };
+      send(data);
+      $(this).val().replace(msg, "");
+    }
+  
+  });
+
+});
+
+
 
 function checkTurn(str){
   // timerStop = false;
@@ -297,7 +320,6 @@ function checkTurn(str){
 function send(data) {
   if (socket.readyState == WebSocket.OPEN) {
     // timeCounter(false);
-    timerstop = true;
     var json = JSON.stringify(data);
     socket.send(json);
   }
