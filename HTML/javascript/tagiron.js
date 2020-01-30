@@ -4,13 +4,15 @@ var socket = new WebSocket('ws://localhost:8080');
 var key;
 var tiles = ["r0", "r1", "r2", "r3", "r4"];
 
+var time;
 var aArray = new Array();
 var qValue;
 var myturn;
-var timerStop;
+var timer;
+// var timerStop;
 var cancelPossible;
 
-$(window).on('load', function(){
+$(window).on('load', function () {
   $('#modalQs').prepend('<div class="modalTurnS">対戦相手をまっています</div>');
   $('.js-modal').fadeIn();
 });
@@ -18,7 +20,7 @@ $(window).on('load', function(){
 // 画像クリック時の処理
 $(function () {
 
-  
+
 
   // チェックボックスのクリック無効化
   $('.a_box .disabled_checkbox').click(function () {
@@ -47,7 +49,7 @@ $(function () {
   });
 
   // 画像クリックの処理(質問)
-  $(document).on('click', 'img.qimg', function() {
+  $(document).on('click', 'img.qimg', function () {
     if ($(this).attr('src').indexOf('field') == -1) {
       var $imageList = $('.q_list');
 
@@ -65,7 +67,7 @@ $(function () {
   // 質問ボタンの動作
 
   document.getElementById("qb").onclick = function () {
-    
+    timerStop();
     if (myturn) {
       if (qValue != null) {
         var qnum = new Array();
@@ -100,7 +102,7 @@ $(function () {
           qnum.forEach(function (qsbValue) {
             $('.modalBBox').append('<button type="button" class="modalQsb" value="' + qsbValue + '">' + qsbValue + '</button>');
           })
-          if(cancelPossible){
+          if (cancelPossible) {
             $('.modalBBox').append('<button type="button" class="modalCancelb">キャンセル</button>');
           }
           // モーダルウィンドウを表示
@@ -112,25 +114,24 @@ $(function () {
             $('.js-modal').fadeOut();
             $('.modalQsbox').remove();
           });
-  
+
           $("button.modalCancelb").click(function (event) {
             $('.js-modal').fadeOut();
             $('.modalQsbox').remove();
           });
-        }else{
+        } else {
           // 選択しない質問
           questionSend();
         }
-  
+
         function questionSend() {
           // データを送信
           var data = {
-            "type" : "question",
+            "type": "question",
             "roomId": key,
             "id": qValue,
             "qsValue": qsValue
           };
-          timerstop = true;
           send(data);
           // timer(false);
           // 送信した質問の選択解除
@@ -148,17 +149,16 @@ $(function () {
 
   // 回答ボタンの動作
   document.getElementById("ab").onclick = function () {
-    if(myturn){
+    if (myturn) {
       aArray.sort();
       // timer(false);
-      
+
       if (aArray.length == 5) {
         var data = {
-          "type" : "answer",
+          "type": "answer",
           "roomId": key,
           "aArray": aArray
         };
-        timerstop = true;
         send(data);
         // 送信した回答の選択解除
         $("img.aNum.checked").removeClass('checked');
@@ -188,6 +188,7 @@ socket.onmessage = function (event) {
       gameStart(data);
       break;
     case "questionData":
+      timerStop();
       var qIDs = date.qIDs;
       questionSet(qIDs);
       break;
@@ -196,7 +197,6 @@ socket.onmessage = function (event) {
       break;
 
     case "chat":
-      
       var text = $("#chat").text();
       text = "相手:" + data.msg + "\n" + text;
       document.getElementById("chat").innerHTML = text;
@@ -211,10 +211,10 @@ socket.onmessage = function (event) {
       setTimeout(function () {
         location.href = 'Title.html';
       }, 2000);
-      
+
       break;
     case "question":
-      timerStop = true;
+      timerStop();
       var qID = data.qID;
       var atxt = data.anser;
       qLogGene(qID, atxt);
@@ -222,18 +222,18 @@ socket.onmessage = function (event) {
       checkTurn(data.turn);
       break;
     case "newField":
-      timerStop = true;
+      timerStop();
       setQuestions(data.field);
       checkTurn(data.turn);
       // setTimeout(function(){
-        
+
       // }, 3000);
       break;
     case "answer":
-      timerStop = true;
-      if(data.tof == "true"){
+      timerStop()
+      if (data.tof == "true") {
         aLogGene(data.player, true, data.turn);
-      }else {
+      } else {
         aLogGene(data.player, false, data.turn);
       }
       break;
@@ -250,14 +250,14 @@ function gameStart(fieldData) {
 
   setQuestions(fieldData.question);
 
-  if(tiles.length > 4){
+  if (tiles.length > 4) {
     var deleat = document.getElementById("tile5");
     deleat.parentNode.removeChild(deleat);
   }
-  
+
 
   var count = 1;
-  for (var key in tiles){
+  for (var key in tiles) {
     var id = "tile" + count;
     count++;
 
@@ -268,7 +268,6 @@ function gameStart(fieldData) {
   }
 
   checkTurn(fieldData.turn);
-
 }
 
 function setQuestions(questions) {
@@ -278,10 +277,10 @@ function setQuestions(questions) {
 
     var id = "qimg" + count;
     count++;
-    if(questions[val] == null){
+    if (questions[val] == null) {
       var img = document.getElementById(id);
       img.src = "./Timg/field.png";
-    }else {
+    } else {
       var imgfile = "./Timg/" + questions[val] + ".jpg";
       var img = document.getElementById(id);
 
@@ -293,36 +292,36 @@ function setQuestions(questions) {
 
 //buttonAction
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-  $("input.inputText").keypress(function(e) {
+  $("input.inputText").keypress(function (e) {
 
-    if(e.which == 13){
+    if (e.which == 13) {
       var msg = $(this).val();
       var text = $("#chat").text();
       text = "自分：" + msg + "\n" + text;
       document.getElementById("chat").innerHTML = text;
       var data = {
-        "type" : "message",
-        "roomId" : key,
-        "msg" : msg
+        "type": "message",
+        "roomId": key,
+        "msg": msg
       };
       send(data);
       $(this).val().replace(msg, "");
     }
-  
+
   });
 
 });
 
 
 
-function checkTurn(str){
+function checkTurn(str) {
   // timerStop = false;
-  if(str == "true"){
+  if (str == "true") {
     myturn = true;
     timeCounter();
-  }else {
+  } else {
     myturn = false;
     timeCounter();
   }
@@ -368,20 +367,20 @@ function aLogGene(player, tof, turn) {
     $('.js-modal').fadeOut();
     $('.modalTf').remove();
 
-    if(tof == true){
-      if(player.match("あなた")){
+    if (tof == true) {
+      if (player.match("あなた")) {
         resultDisplay("win");
-      }else {
+      } else {
         resultDisplay("lose");
       }
-    }else{
+    } else {
       checkTurn(turn);
     }
 
   }, 3000);
   $('#logBox').prepend('<div class="tf">' + player + 'の回答：' + tofMsg + '</div>');
 
-  
+
 
 }
 
@@ -443,11 +442,8 @@ function timeCounter() {
       $('.js-modal').fadeOut();
       $('.modalTurnS').remove();
       // timer(true);
-
     }, 2000);
-
-    
-  }else {
+  } else {
     $('#modalQs').prepend('<div class="modalTurnS">相手のターンです。</div>');
     // モーダルウィンドウを表示
     $('.js-modal').fadeIn();
@@ -455,54 +451,64 @@ function timeCounter() {
     setTimeout(function () {
       $('.js-modal').fadeOut();
       $('.modalTurnS').remove();
-      // timer(true);
     }, 2000);
   }
 
-  var time = 10;
-  var timer = setInterval(function () {
-    time = time - 1;
-    var timeP = document.getElementById("time");
-    timeP.innerHTML = time + "秒";
-    if (timerStop) {
-      clearInterval(timer);
-      timerStop = false;
-    }
+  setTimeout(function(){
+    timerStrat();
+  }, 2000);
 
-    if(time == 0){
-      // timerStop = true;
-      // モーダルウィンドウの要素を追加
-      $('#modalQs').prepend('<div class="modalTurnF">ターン終了。</div>');
-      // モーダルウィンドウを表示
-      $('.js-modal').fadeIn();
-      // 1秒後にモーダルウィンドウを削除
-      setTimeout(function () {
-        $('.js-modal').fadeOut();
-        $('.modalTurnF').remove();
+}
 
-        console.log($("ul.q_list>li>div").length);
-        for (let i = 0; i < $("ul.q_list>li>div").length; i++) {
-          if ($("ul.q_list>li>div>img").eq(i).attr('src').indexOf('field') == -1) {
-            $("ul.q_list>li>div>img").eq(i).click();
-            cancelPossible = false;
-            $('.qb').click();
-            break;
-          } else {
+function timerStrat(){
+  time = 20;
+  timer = setInterval(timerAction, 1000);
+}
 
-            if (i == $("ul.q_list>li>div").length - 1) {
-              resultDisplay("draw");
-            }
+function timerStop(){
+  clearInterval(timer);
+}
 
+function timerAction() {
+  time = time - 1;
+  var timeP = document.getElementById("time");
+  timeP.innerHTML = time + "秒";
+  // if (timerStop) {
+  //   clearInterval(timer);
+  //   timerStop = false;
+  // }
+
+  if (time == 0) {
+    timerStop();
+    // モーダルウィンドウの要素を追加
+    $('#modalQs').prepend('<div class="modalTurnF">ターン終了。</div>');
+    // モーダルウィンドウを表示
+    $('.js-modal').fadeIn();
+    // 1秒後にモーダルウィンドウを削除
+    setTimeout(function () {
+      $('.js-modal').fadeOut();
+      $('.modalTurnF').remove();
+
+      console.log($("ul.q_list>li>div").length);
+      for (let i = 0; i < $("ul.q_list>li>div").length; i++) {
+        if ($("ul.q_list>li>div>img").eq(i).attr('src').indexOf('field') == -1) {
+          $("ul.q_list>li>div>img").eq(i).click();
+          cancelPossible = false;
+          $('.qb').click();
+          break;
+        } else {
+
+          if (i == $("ul.q_list>li>div").length - 1) {
+            resultDisplay("draw");
           }
 
         }
 
-      }, 1000);
+      }
 
-      
-    }
+    }, 1000);
 
-  }, 1000);
-  
+
+  }
 }
 
