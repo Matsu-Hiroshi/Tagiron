@@ -1,6 +1,6 @@
 
 
-var socket = new WebSocket('ws://localhost:8080');
+var socket = new WebSocket('ws://121.85.185.21:50500');
 
 var key;
 

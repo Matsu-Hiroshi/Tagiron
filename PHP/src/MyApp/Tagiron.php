@@ -17,7 +17,6 @@ namespace MyApp;
 
 		public static function sort($tile){
 			
-			echo "sort\n";
 			$tile = array_values($tile);
 			$sortTile = [];
 			for ($i=0; $i < count($tile); $i++) { 
@@ -70,7 +69,6 @@ namespace MyApp;
 			for($i = 0;$i < 6;$i++) {
 				$this->question[] = array_shift($this->questions);
 			}
-			var_dump($this->question);
 
 			for($i = 0;$i < $playerNum;$i++){
 				$this->players += [ $i => array() ];

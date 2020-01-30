@@ -2,17 +2,18 @@
 	
 	namespace MyApp;
 
-	require_once("/Applications/MAMP/htdocs/project/PHP/src/MyApp/Tagiron.php");
+	require_once("Tagiron.php");
 
 	class RelayTagiron {
 
 		public function __construct() {
-			session_start();
+			if(!isset($_SESSION)){
+				session_start();
+			}
 		}
 
 		//新しい場を作る
 		public function add($key, $conns) {
-			echo "roomId:".$key."\n";
 			$_SESSION[$key] = new Tagiron($conns);
 		}
 
@@ -43,7 +44,6 @@
 		//場を消す
 		public function remove($key) {
 			unset($_SESSION[$key]);
-			echo "unset:".$key."\n";
 		}
 
 	}

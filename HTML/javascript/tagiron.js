@@ -8,9 +8,9 @@ var aArray = new Array();
 var qValue;
 var myturn;
 var timerStop;
+var cancelPossible;
 
 $(window).on('load', function(){
-  console.log("window_onload");
   $('#modalQs').prepend('<div class="modalTurnS">対戦相手をまっています</div>');
   $('.js-modal').fadeIn();
 });
@@ -39,6 +39,7 @@ $(function () {
         aArray.push($(this)[0].alt);
       }
     }
+
   });
 
   $('.q_box .disabled_checkbox').click(function () {
@@ -47,21 +48,23 @@ $(function () {
 
   // 画像クリックの処理(質問)
   $(document).on('click', 'img.qimg', function() {
-    var $imageList = $('.q_list');
+    if ($(this).attr('src').indexOf('field') == -1) {
+      var $imageList = $('.q_list');
 
-    // 現在の選択解除
-    $imageList.find('img.qimg.checked').removeClass('checked');
+      // 現在の選択解除
+      $imageList.find('img.qimg.checked').removeClass('checked');
 
-    // チェックを入れる
-    $(this).addClass('checked');
-    var imageURL = $(this)[0].src;
-    qValue = imageURL.split("/").pop().split(".")[0];
+      // チェックを入れる
+      $(this).addClass('checked');
+      var imageURL = $(this)[0].src;
+      qValue = imageURL.split("/").pop().split(".")[0];
+
+    }
   });
 
   // 質問ボタンの動作
 
   document.getElementById("qb").onclick = function () {
-    // timer(false);
     
     if (myturn) {
       if (qValue != null) {
@@ -97,7 +100,9 @@ $(function () {
           qnum.forEach(function (qsbValue) {
             $('.modalBBox').append('<button type="button" class="modalQsb" value="' + qsbValue + '">' + qsbValue + '</button>');
           })
-          $('.modalBBox').append('<button type="button" class="modalCancelb">キャンセル</button>');
+          if(cancelPossible){
+            $('.modalBBox').append('<button type="button" class="modalCancelb">キャンセル</button>');
+          }
           // モーダルウィンドウを表示
           $('.js-modal').fadeIn();
           // モーダルウィンドウでボタンが押されたときの処理
@@ -133,6 +138,8 @@ $(function () {
           $imageList.find('img.qimg.checked').removeClass('checked');
           // 質問の変数をクリア
           qValue = null;
+
+          cancelPossible = true;
         }
       }
     }
@@ -191,17 +198,18 @@ socket.onmessage = function (event) {
     case "chat":
       
       var text = $("#chat").text();
-      text = data.msg + "\n" + text;
+      text = "相手:" + data.msg + "\n" + text;
       document.getElementById("chat").innerHTML = text;
       break;
 
     case "close":
       key = "";
+      console.log("close");
       socket.close();
       $('#modalQs').prepend('<div class="modalTurnS">対戦相手が退出しました。\nタイトル画面に戻ります</div>');
       $('.js-modal').fadeIn();
       setTimeout(function () {
-        location.href = 'title.html';
+        location.href = 'Title.html';
       }, 2000);
       
       break;
@@ -270,10 +278,9 @@ function setQuestions(questions) {
 
     var id = "qimg" + count;
     count++;
-    if(val == null){
+    if(questions[val] == null){
       var img = document.getElementById(id);
-      img.src = "./Timg/feald.jpg";
-      img.id = null;
+      img.src = "./Timg/field.png";
     }else {
       var imgfile = "./Timg/" + questions[val] + ".jpg";
       var img = document.getElementById(id);
@@ -346,7 +353,6 @@ function qLogGene(qID, aMsg) {
 
 // 回答のログ生成
 function aLogGene(player, tof, turn) {
-  console.log(turn);
   var tofMsg;
   if (tof == true) {
     tofMsg = "正解です";
@@ -411,7 +417,7 @@ function resultDisplay(result) {
   setTimeout(function () {
     $('.js-modal').fadeOut();
     $('.modalResult').remove();
-    location.href = 'title.html';
+    location.href = 'Title.html';
   }, 5000);
 }
 
@@ -437,6 +443,7 @@ function timeCounter() {
       $('.js-modal').fadeOut();
       $('.modalTurnS').remove();
       // timer(true);
+
     }, 2000);
 
     
@@ -452,7 +459,7 @@ function timeCounter() {
     }, 2000);
   }
 
-  var time = 60;
+  var time = 10;
   var timer = setInterval(function () {
     time = time - 1;
     var timeP = document.getElementById("time");
@@ -463,6 +470,7 @@ function timeCounter() {
     }
 
     if(time == 0){
+      // timerStop = true;
       // モーダルウィンドウの要素を追加
       $('#modalQs').prepend('<div class="modalTurnF">ターン終了。</div>');
       // モーダルウィンドウを表示
@@ -471,10 +479,27 @@ function timeCounter() {
       setTimeout(function () {
         $('.js-modal').fadeOut();
         $('.modalTurnF').remove();
+
+        console.log($("ul.q_list>li>div").length);
+        for (let i = 0; i < $("ul.q_list>li>div").length; i++) {
+          if ($("ul.q_list>li>div>img").eq(i).attr('src').indexOf('field') == -1) {
+            $("ul.q_list>li>div>img").eq(i).click();
+            cancelPossible = false;
+            $('.qb').click();
+            break;
+          } else {
+
+            if (i == $("ul.q_list>li>div").length - 1) {
+              resultDisplay("draw");
+            }
+
+          }
+
+        }
+
       }, 1000);
 
-      clearInterval(timer);
-      timerStop = false;
+      
     }
 
   }, 1000);

@@ -8,17 +8,13 @@ namespace MyApp;
 
    function __construct(){
 
-      echo "Question_in\n";
-
    }
 
    public function print() {
-      echo "QuestionClass_in";
+
    }
 
    public function question($questionId, $tile, $psValue) {
-
-      echo $questionId."\n";
 
       switch($questionId) {
 
@@ -48,7 +44,6 @@ namespace MyApp;
             break;
          case "q7":
          // 奇数は何枚ある？
-            // echo $this->searchOdd($tile);
          	return $this->searchOdd($tile);
             break;
          case "q8":
@@ -222,15 +217,6 @@ namespace MyApp;
       }
    }
 
-// 	// 最大値から最小値引いた数を求める
-// 	function comparisonNum(){
-// 		$num=[array_slice($tile
-// ,0,1),array_slice($tile
-// ,-1,1)];
-// 		$num = (int)substr($num[1][0],1) - (int)substr($num[0][0],1);
-// 		echo "最大値から最小値引いた値は".$num."です\n";
-// 	}
-
    //赤タイルの枚数を求める q11
    function countRed($tile){
       $count = 0;
@@ -252,7 +238,6 @@ namespace MyApp;
 				$count++;
 			}
 		}
-		// echo "青カードの合計は".$count."です\n";
 		return $count;
 	}
 

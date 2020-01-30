@@ -13,10 +13,10 @@ class Chat implements MessageComponentInterface {
     public function __construct() {
         $this->clients = new \SplObjectStorage;
 
-        require_once (dirname(__FILE__)."/Rooms.php");
+        require_once ("Rooms.php");
         $this->room = new Room();
 
-        require_once (dirname(__FILE__)."/relayTagiron.php");
+        require_once ("relayTagiron.php");
         $this->tagironData = new RelayTagiron();
 
     }
@@ -30,7 +30,6 @@ class Chat implements MessageComponentInterface {
         $opponent = $this->room->getOpponent($roomId);
 
         if(count($opponent) >= 2){
-            echo "startgame\n";
             $this->tagironData->add($roomId, $opponent);
             $this->gameStart($this->tagironData->getField($roomId), $roomId);
         }
@@ -57,7 +56,6 @@ class Chat implements MessageComponentInterface {
                 "question" => $field["question"]
             ];
 
-            echo $nextPlayer->resourceId;
             if($field["players"][$i]["cliant"] == $nextPlayer){
                 $data += array("turn" => "true");
             }else{
@@ -72,10 +70,7 @@ class Chat implements MessageComponentInterface {
     //クライアントからのメッセージの受信
     public function onMessage(ConnectionInterface $from, $msg) {
 
-        // echo "\nfrom:".$from->resourceId."\ndata:".$msg."\n";
-
         $data = json_decode($msg, true);
-        // echo $data["type"];
         $member = $this->room->getOpponent($data["roomId"]);
         $memberNum = count($member);
 
@@ -131,7 +126,7 @@ class Chat implements MessageComponentInterface {
                     if($member[$i] != $from){
                         $sendData = [
                             "type" => "chat",
-                            "msg" =>  "相手:".$data['msg']
+                            "msg" =>  $data['msg']
                         ];
 
                         $msg = json_encode($sendData);
@@ -226,7 +221,6 @@ class Chat implements MessageComponentInterface {
                 }
 
             }
-            // echo "for_in";
         }
 
     }
@@ -247,20 +241,15 @@ class Chat implements MessageComponentInterface {
             if($member != NULL){
                 $sendData = [
                     "type" => "close",
-                    "msg" => "対戦相手が退出しました"
                 ];
                 $sendjson = json_encode($sendData);
-                // $this->send($opp, $sendjson);
-
                 for($i = 0; $i < count($member); $i++) {
                     $this->send($member[$i], $sendjson);
                 }
             }
             $this->tagironData->remove($key);
             
-            echo "endgame\n";
         }
-        echo "remove_".$key."\n";
         $this->room->remove($key);
         
     }

@@ -17,10 +17,6 @@ class Room extends Chat{
 		$_SESSION['count']++;
 
 		if($_SESSION['count'] % 2 == 0) {
-			// $_SESSION['room'][] = $conn;
-			// $_SESSION['rooms'] += array($_SESSION['ran'] => $_SESSION['room']);
-			// $_SESSION['room'] = array();
-			// var_dump($_SESSION['rooms'][$_SESSION['ran']]);
 			$_SESSION['rooms'][$_SESSION['ran']][] = $conn;
 		}else {
 			$_SESSION['ran'] = uniqid(rand(), false);
